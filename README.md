@@ -2,10 +2,10 @@
 
 ## Projeto separado em camadas
 
-Domínio: A camada geralmente contém lógica de negócio e entidades.
-Aplicação: A camada de aplicativo contem interfaces e tipos.
-Apresentação: A camada de apresentação é onde está localizado o projeto aonde o usuário pode acessar.
-Infraestrutura: A camada de infraestrutura é aonde fica localizado o acesso ao banco de dados e a configuração das entidades.
+  - Domínio: A camada geralmente contém lógica de negócio e entidades.
+  - Aplicação: A camada de aplicativo contem interfaces e tipos.
+  - Apresentação: A camada de apresentação é onde está localizado o projeto aonde o usuário pode acessar.
+  - Infraestrutura: A camada de infraestrutura é aonde fica localizado o acesso ao banco de dados e a configuração das entidades.
 
 ## Tecnologias e bibliotecas
 
