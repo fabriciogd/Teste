@@ -25,3 +25,7 @@ CQRS: Significa Command Query Responsibility Segregation. O objetivo principal �
 informações e outro para ler informações. No projeto foi utilizado apenas as Queries, sendo criado um Message para cada Query realizada.
 
 Dependency Inversion Principle: De uma forma objetiva o princípio nos faz entender que sempre devemos depender de abstrações e não das implementações.
+
+## Observações
+
+Quando você cria um contexto para o EF e indica as classes do mapeamento, basicamente diz a ele que todos os objetos deverão ser rastreados, ou seja, o simples fato de você criar um objeto ou ler a partir do contexto, coloca este objeto sobre o controle do EF. Para não executar esta lógica, temos o método “AsNoTracking()", que em termos bem simples diz ao contexto para não mapear o objeto.
