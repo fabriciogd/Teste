@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Teste</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span>Hello @User.Identity.Name!</span>
+            @Html.ActionLink("Logout", "Logout", "Account")
+        </nav>
+    }
+
+    <div class="container-fluid">
+        <main role="main" class="row h-100 justify-content-center align-items-center">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Teste
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+<style>
+    html, body {
+        height: 100%;
+        margin-bottom: 0;
+    }
+
+    .footer {
+        bottom: auto;
+    }
+</style>

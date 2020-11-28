@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Application.Models.CustomerDTO>
+@using Web.Extensions;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="col-10">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "p-0 m-0", @id = "form" }))
+    {
+        <div class="form-group">
+            <fieldset>
+                <legend>Customers List</legend>
+
+                <div class="row">
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputName">Name</label>
+                        <div>
+                            <input type="text" class="form-control text-box single-line" name="name" id="inputName" value="@ViewBag.Name">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputGender">Gender</label>
+                        <div>
+                            <select asp-items="@ViewBag.Genders" name="genderId" class="form-control custom-select" id="inputGender"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputCity">City</label>
+                        <div>
+                            <select asp-items="@ViewBag.Cities" name="cityId" class="form-control custom-select" id="inputCity"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputRegion">Region</label>
+                        <div>
+                            <select asp-items="@ViewBag.Regions" name="regionId" class="form-control custom-select" id="inputRegion"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputClassification">Classification</label>
+                        <div>
+                            <select asp-items="@ViewBag.Classifications" name="classificationId" class="form-control custom-select" id="inputClassification"></select>
+                        </div>
+                    </div>
+
+                    @{
+                        if (User.IsAdmin())
+                        {
+                            <div class="form-group col-6">
+                                <label class="control-label" for="inputUser">User</label>
+                                <div>
+                                    <select asp-items="@ViewBag.Users" name="userId" class="form-control custom-select" id="inputUser"></select>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputLastPurchaseStart">Last Purchase</label>
+                        <div>
+                            <input type="text" class="form-control datepicker" name="LastPurchaseStart" data-date-format="dd/mm/yyyy" id="inputLastPurchaseStart" data-value="@ViewBag.LastPurchaseStart">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-6">
+                        <label class="control-label" for="inputLastPurchaseEnd">Last Purchase Until</label>
+                        <div>
+                            <input type="text" class="form-control datepicker" name="LastPurchaseEnd" data-date-format="dd/mm/yyyy" id="inputLastPurchaseEnd"  data-value="@ViewBag.LastPurchaseEnd">
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="button" class="btn btn-secondary" id="clearButton">Clear</button>
+                </p>
+            </fieldset>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped table-hover sortable">
+            <thead>
+                <tr class="danger">
+                    <th data-defaultsign="AZ">Classification</th>
+                    <th data-defaultsign="AZ">Name</th>
+                    <th data-defaultsign="_19">Phone</th>
+                    <th data-defaultsign="AZ">Gender</th>
+                    <th data-defaultsign="AZ">City</th>
+                    <th data-defaultsign="AZ">Region</th>
+                    <th data-defaultsign="month">Last Purchase</th>
+                    <th data-defaultsign="AZ">Seller</th>
+                </tr>
+            </thead>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ClassificationName</td>
+                        <td>@item.Name</td>
+                        <td>@item.Phone</td>
+                        <td>@item.GenderName</td>
+                        <td>@item.CityName</td>
+                        <td>@item.RegionName</td>
+                        <td>@item.LastPurchase.ToString("dd/MM/yyyy")</td>
+                        <td>@item.UserName</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        var pattern = /(\d{2})\/(\d{2})\/(\d{4})/;
+
+        $('#inputLastPurchaseStart').datepicker({
+            format: 'dd/mm/yyyy'
+        }).datepicker("setDate", new Date($('#inputLastPurchaseStart').data('value').replace(pattern,'$2-$1-$3')));
+
+        $('#inputLastPurchaseEnd').datepicker({
+            format: 'dd/mm/yyyy',
+        }).datepicker("setDate", new Date($('#inputLastPurchaseEnd').data('value').replace(pattern,'$2-$1-$3')));
+
+        $('#clearButton').click(function () {
+            clear();
+        });
+
+        function clear() {
+            $('#form').find('input[type=text], textarea, select').val(null);
+        }
+    </script>
+}
