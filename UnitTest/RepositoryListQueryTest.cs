@@ -1,19 +1,17 @@
 ﻿using Application.Interfaces;
-using MediatR;
+using Application.Models;
+using Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Queries.Handlers;
-using Queries.Messages;
-using System;
+using Persistence.Repository;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using UnitTest.Helpers;
 
 namespace UnitTest
 {
     [TestClass]
-    public class CitiesQueryTest
+    public class RepositoryListQueryTest
     {
         List<Domain.Entities.City> entities;
         IApplicationDbContext context;
@@ -21,9 +19,9 @@ namespace UnitTest
         [TestInitialize]
         public void Setup()
         {
-            entities = new List<Domain.Entities.City>
+            entities = new List<City>
             {
-                new Domain.Entities.City
+                new City
                 {
                     Id = 1,
                     Name = "TEST NAME"
@@ -31,7 +29,7 @@ namespace UnitTest
             };
 
             var myDbMoq = new Mock<IApplicationDbContext>();
-            myDbMoq.Setup(p => p.Cities).Returns(DbContextMock.GetQueryableMockDbSet<Domain.Entities.City>(entities));
+            myDbMoq.Setup(p => p.AsNoTracking<City>()).Returns(DbContextMock.GetQueryableMockDbSet<Domain.Entities.City>(entities));
 
             context = myDbMoq.Object;
         }
@@ -39,10 +37,9 @@ namespace UnitTest
         [TestMethod]
         public async Task Query_WhenCalled_ReturnsListResult()
         {
-            FindAllCitiesQuery message = new FindAllCitiesQuery();
-            FindAllCitiesQueryHandler handler = new FindAllCitiesQueryHandler(context);
+            RepositoryListQuery<City, CityDTO> repositoryQuery = new RepositoryListQuery<City, CityDTO>(context);
 
-            var list = await handler.Handle(message, new System.Threading.CancellationToken());
+            var list = await repositoryQuery.GetAll();
 
             Assert.IsTrue(list.Count == 1);
         }

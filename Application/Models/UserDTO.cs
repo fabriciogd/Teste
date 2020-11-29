@@ -1,6 +1,8 @@
-﻿namespace Application.Models
+﻿using Application.Base;
+
+namespace Application.Models
 {
-    public class UserDTO : SelectListDTO
+    public class UserDTO : ListDTO
     {
     }
 }

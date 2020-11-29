@@ -1,12 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Queries.Messages;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,21 +11,16 @@ namespace Queries.Handlers
 {
     public class FindAllGendersQueryHandler : IRequestHandler<FindAllGendersQuery, IList<GenderDTO>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IRepositoryListQuery<Gender, GenderDTO> _repositoryQuery;
 
-        public FindAllGendersQueryHandler(IApplicationDbContext context)
+        public FindAllGendersQueryHandler(IRepositoryListQuery<Gender, GenderDTO> repositoryQuery)
         {
-            _context = context;
+            _repositoryQuery = repositoryQuery;
         }
 
         public async Task<IList<GenderDTO>> Handle(FindAllGendersQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Genders.AsNoTracking()
-                .Select(a => new GenderDTO()
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                }).ToListAsync();
+            return await _repositoryQuery.GetAll();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Application.Models
+﻿namespace Application.Base
 {
-    public abstract class SelectListDTO
+    public abstract class ListDTO
     {
         public int? Id { get; set; }
         public string Name { get; set; }

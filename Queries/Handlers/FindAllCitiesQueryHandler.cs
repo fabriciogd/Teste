@@ -1,10 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Queries.Messages;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,21 +11,16 @@ namespace Queries.Handlers
 {
     public class FindAllCitiesQueryHandler : IRequestHandler<FindAllCitiesQuery, IList<CityDTO>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IRepositoryListQuery<City, CityDTO> _repositoryQuery;
 
-        public FindAllCitiesQueryHandler(IApplicationDbContext context)
+        public FindAllCitiesQueryHandler(IRepositoryListQuery<City, CityDTO> repositoryQuery)
         {
-            _context = context;
+            _repositoryQuery = repositoryQuery;
         }
 
         public async Task<IList<CityDTO>> Handle(FindAllCitiesQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Cities.AsNoTracking()
-                .Select(a => new CityDTO()
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                }).ToListAsync();
+            return await _repositoryQuery.GetAll();
         }
     }
 }

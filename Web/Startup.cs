@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Persistence.Context;
+using Persistence.Repository;
 using Queries;
 
 namespace Web
@@ -40,6 +41,8 @@ namespace Web
             services.AddHttpContextAccessor();
 
             services.AddQueries();
+
+            services.AddScoped(typeof(IRepositoryListQuery<,>), typeof(RepositoryListQuery<,>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

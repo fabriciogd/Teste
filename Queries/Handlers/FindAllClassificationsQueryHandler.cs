@@ -1,10 +1,9 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Queries.Messages;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,21 +11,16 @@ namespace Queries.Handlers
 {
     public class FindAllClassificationsQueryHandler : IRequestHandler<FindAllClassificationsQuery, IList<ClassificationDTO>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IRepositoryListQuery<Classification, ClassificationDTO> _repositoryQuery;
 
-        public FindAllClassificationsQueryHandler(IApplicationDbContext context)
+        public FindAllClassificationsQueryHandler(IRepositoryListQuery<Classification, ClassificationDTO> repositoryQuery)
         {
-            _context = context;
+            _repositoryQuery = repositoryQuery;
         }
 
         public async Task<IList<ClassificationDTO>> Handle(FindAllClassificationsQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Classifications.AsNoTracking()
-                .Select(a => new ClassificationDTO()
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                }).ToListAsync();
+            return await _repositoryQuery.GetAll();
         }
     }
 }

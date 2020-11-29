@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Persistence.Context
 {
@@ -17,6 +18,11 @@ namespace Persistence.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+        }
+
+        public IQueryable<TEntity> AsNoTracking<TEntity>() where TEntity : class
+        {
+            return this.Set<TEntity>().AsNoTracking();
         }
     }
 }

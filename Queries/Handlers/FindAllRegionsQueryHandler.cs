@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Application.Models;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Queries.Messages;
@@ -12,21 +13,16 @@ namespace Queries.Handlers
 {
     public class FindAllRegionsQueryHandler : IRequestHandler<FindAllRegionsQuery, IList<RegionDTO>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IRepositoryListQuery<Region, RegionDTO> _repositoryQuery;
 
-        public FindAllRegionsQueryHandler(IApplicationDbContext context)
+        public FindAllRegionsQueryHandler(IRepositoryListQuery<Region, RegionDTO> repositoryQuery)
         {
-            _context = context;
+            _repositoryQuery = repositoryQuery;
         }
 
         public async Task<IList<RegionDTO>> Handle(FindAllRegionsQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Regions.AsNoTracking()
-                .Select(a => new RegionDTO()
-                {
-                    Id = a.Id,
-                    Name = a.Name
-                }).ToListAsync();
+            return await _repositoryQuery.GetAll();
         }
     }
 }
