@@ -29,3 +29,5 @@ Dependency Inversion Principle: De uma forma objetiva o princípio nos faz enten
 ## Observações
 
 Quando você cria um contexto para o EF e indica as classes do mapeamento, basicamente diz a ele que todos os objetos deverão ser rastreados, ou seja, o simples fato de você criar um objeto ou ler a partir do contexto, coloca este objeto sobre o controle do EF. Para não executar esta lógica, temos o método “AsNoTracking()", que em termos bem simples diz ao contexto para não mapear o objeto.
+
+Foi utilizado o padrão RepositoryQuery para a implementação da busca das listas, visando diminuir a replicação da lógica e centralizando em uma unica classe.
