@@ -57,6 +57,8 @@ namespace Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        #region Lists
+
         private async Task<IList<GenderDTO>> FindAllGenders()
         {
             var items = await Mediator.Send(new FindAllGendersQuery());
@@ -96,5 +98,7 @@ namespace Web.Controllers
 
             return items;
         }
+
+        #endregion
     }
 }

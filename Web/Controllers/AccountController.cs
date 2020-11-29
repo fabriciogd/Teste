@@ -26,7 +26,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid)
             {
@@ -46,18 +46,11 @@ namespace Web.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                {
-                    return Redirect(returnUrl);
-                }
-
                 return RedirectToAction("Index", "Home");
             }
 
             return View(model);
         }
-
 
         public async Task<ActionResult> Logout()
         {
@@ -68,11 +61,12 @@ namespace Web.Controllers
 
         private IEnumerable<Claim> GetUserClaims(User user)
         {
-            List<Claim> claims = new List<Claim>();
-
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
-            claims.Add(new Claim(ClaimTypes.Name, user.Login));
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Login),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
             var role = user.Role.IsAdmin ? Application.Structs.Role.Administrator : Application.Structs.Role.Seller;
 
