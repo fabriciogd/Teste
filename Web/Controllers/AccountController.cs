@@ -73,7 +73,10 @@ namespace Web.Controllers
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
             claims.Add(new Claim(ClaimTypes.Name, user.Login));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
-            claims.Add(new Claim(ClaimTypes.Role, user.Role.Name.Trim()));
+
+            var role = user.Role.IsAdmin ? Application.Structs.Role.Administrator : Application.Structs.Role.Seller;
+
+            claims.Add(new Claim(ClaimTypes.Role, role));
 
             return claims;
         }
